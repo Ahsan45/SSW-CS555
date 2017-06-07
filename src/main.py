@@ -2,7 +2,7 @@
 
 import sys
 
-def parse(line):
+def parse(gedcom):
     """Parse each line of the GEDCOM file"""
     valid_tags = [["INDI", "FAM", "HEAD", "TRLR", "NOTE"],
                   ["NAME", "SEX", "BIRT", "DEAT", "FAMC","FAMS",
@@ -27,25 +27,55 @@ def parse(line):
         parts.remove(tag)
         return " ".join(parts)
 
+    def add_to_dict(cur_key, tag, args):
+        """Add current line to appropiate dictionary"""
+        if cur_key[0] == "I":
+            individuals[cur_key][tag] = args
+        else:
+            families[cur_key][tag] = args
 
-    line_parts = line.split(" ")
+    individuals = {}
+    families = {}
+    cur_key = ""
+    second_key = ""
 
-    level = line_parts[0]
-    tag = get_tag(line_parts)
-    valid = is_valid(level, tag)
-    args = get_args(level, tag, line_parts)
+    for line in gedcom:
+        line_parts = line.rstrip().split(" ")
 
-    input_line = "--> %s" % line
-    parsed = "<-- " + level + "|" + tag + "|" + valid + "|" + args
+        level = line_parts[0]
+        tag = get_tag(line_parts)
+        valid = is_valid(level, tag)
+        args = get_args(level, tag, line_parts)
 
-    return "%s\n%s" % (input_line, parsed)
+        if valid:
+            if level == "0":
+                if tag == "INDI":
+                    cur_key = args
+                    individuals[args] = {}
+                if tag == "FAM":
+                    cur_key = args
+                    families[args] = {}
+            elif level == "1":
+                if tag == "BIRT" or tag == "DEAT" or tag == "MARR" or tag == "DIV":
+                    add_to_dict(cur_key, tag, "")
+                    second_key = tag
+                else:
+                    add_to_dict(cur_key, tag, args)
+            else:
+                if second_key == "":
+                    add_to_dict(cur_key, tag, args)
+                else:
+                    add_to_dict(cur_key, second_key, args)
+                    second_key = ""
+
+    return (individuals, families)
 
 def main(argv):
     """Main function that reads GEDCOM file"""
     gedcom = open(argv[1], 'r')
 
-    for line in gedcom:
-        print parse(line.rstrip())
+    data = parse(gedcom)
+    print data
 
 if __name__ == "__main__":
     main(sys.argv)
