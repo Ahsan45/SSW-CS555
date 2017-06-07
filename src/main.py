@@ -1,6 +1,10 @@
 """Script to parse a GEDCOM file passed as a system argument"""
 
 import sys
+import time
+from dateutil import parser
+from dateutil.relativedelta import relativedelta
+from prettytable import PrettyTable
 
 def parse(gedcom):
     """Parse each line of the GEDCOM file"""
@@ -32,7 +36,13 @@ def parse(gedcom):
         if cur_key[0] == "I":
             individuals[cur_key][tag] = args
         else:
-            families[cur_key][tag] = args
+            if tag == "CHIL":
+                if not families[cur_key].has_key(tag):
+                    families[cur_key][tag] = [args]
+                else:
+                    families[cur_key][tag].append(args)
+            else:
+                families[cur_key][tag] = args
 
     individuals = {}
     families = {}
@@ -70,12 +80,64 @@ def parse(gedcom):
 
     return (individuals, families)
 
+def buildTable(cur_data, ref_data, data_type):
+    """Build a table for the given data"""
+    table = PrettyTable()
+
+    def find_age(start, end):
+        """Parse strings as date objects and compare them to get age"""
+        start = parser.parse(start)
+        end = parser.parse(end)
+
+        return relativedelta(end, start).years
+
+    def get(key, field):
+        """Looks up the requested data in the appropiate dictionary"""
+        if field == "AGE":
+            if cur_data[key].has_key("DEAT"):
+                return find_age(cur_data[key]["BIRT"], cur_data[key]["DEAT"])
+            else:
+                return find_age(cur_data[key]["BIRT"], time.strftime("%m %d %Y"))
+        elif field == "ALIVE":
+            return cur_data[key].has_key("DEAT")
+        elif field == "HUSB_NAME":
+            if cur_data[key].has_key("HUSB"):
+                return ref_data[cur_data[key]["HUSB"]]["NAME"]
+            else: return "NA"
+        elif field == "WIFE_NAME":
+            if cur_data[key].has_key("WIFE"):
+                return ref_data[cur_data[key]["WIFE"]]["NAME"]
+            else: return "NA"
+
+        return cur_data[key][field] if cur_data[key].has_key(field) else "NA"
+
+    if data_type == "individuals":
+        table.field_names = ["ID", "Name", "Gender", "Birthday","Age",
+                             "Alive", "Death", "Child", "Spouse"]
+
+        for key in sorted(cur_data.iterkeys()):
+            table.add_row([key, get(key, "NAME"), get(key, "SEX"), get(key, "BIRT"), get(key, "AGE"),
+                           get(key, "ALIVE"), get(key, "DEAT"), get(key, "FAMC"), get(key, "FAMS")])
+    else:
+        table.field_names = ["ID", "Married", "Divorced", "Husband ID",
+                             "Husband Name", "Wife ID", "Wife Name", "Children"]
+
+        for key in sorted(cur_data.iterkeys()):
+            table.add_row([key, get(key, "MARR"), get(key, "DIV"), get(key, "HUSB"), get(key, "HUSB_NAME"),
+                           get(key, "WIFE"), get(key, "WIFE_NAME"), get(key, "CHIL")])
+
+    return table
+
 def main(argv):
     """Main function that reads GEDCOM file"""
     gedcom = open(argv[1], 'r')
 
     data = parse(gedcom)
-    print data
+    inds = buildTable(data[0], data[1], "individuals")
+    fams = buildTable(data[1], data[0], "families")
+
+    print "\nIndividuals\n", inds
+    print "\nFamilies\n", fams
 
 if __name__ == "__main__":
     main(sys.argv)
