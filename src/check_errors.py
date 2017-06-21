@@ -8,10 +8,10 @@ def check_indiv(indivs):
         if not birth_before_death.birth_before_death(indivs[key]):
             if indivs[key]["SEX"] == "M": pronoun = "his"
             else: pronoun = "her"
-            print "Error US01: Birth date of {} ({}) occurs after {} death date".format(indivs[key]["NAME"], key, pronoun)
+            print "Error US03: Birth date of {} ({}) occurs after {} death date".format(indivs[key]["NAME"], key, pronoun)
 
 def check_fam(fams):
     """Checks for family-level logical errors"""
     for key in sorted(fams.iterkeys()):
         if not marr_before_div.marr_before_div(fams[key]):
-            print "Error US02: Divorce occurs before marriage in this family ({})".format(key)
+            print "Error US04: Divorce occurs before marriage in this family ({})".format(key)

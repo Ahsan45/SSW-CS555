@@ -1,6 +1,6 @@
 """Module for running tests"""
 import unittest
-import main
+import parser
 import utils
 import birth_before_death
 import marr_before_div
@@ -21,7 +21,7 @@ class TestBirthBeforeDeath(unittest.TestCase):
     """Class for testing birth before death feature"""
     def setUp(self):
         gedcom = open('inputs/birth_before_death.txt', 'r')
-        self.individuals = main.parse(gedcom)[0]
+        self.individuals = parser.parse(gedcom)[0]
 
     def tearDown(self):
         self.individuals = None
@@ -61,7 +61,7 @@ class TestMarrBeforeDiv(unittest.TestCase):
     """Class for testing birth before death feature"""
     def setUp(self):
         gedcom = open('inputs/marr_before_div.txt', 'r')
-        self.families = main.parse(gedcom)[1]
+        self.families = parser.parse(gedcom)[1]
 
     def tearDown(self):
         self.families = None
