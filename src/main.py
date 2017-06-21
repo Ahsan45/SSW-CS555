@@ -2,9 +2,8 @@
 
 import sys
 import time
-from dateutil import parser
-from dateutil.relativedelta import relativedelta
 from prettytable import PrettyTable
+import utils
 
 def parse(gedcom):
     """Parse each line of the GEDCOM file"""
@@ -80,24 +79,17 @@ def parse(gedcom):
 
     return (individuals, families)
 
-def buildTable(cur_data, ref_data, data_type):
+def build_table(cur_data, ref_data, data_type):
     """Build a table for the given data"""
     table = PrettyTable()
-
-    def find_age(start, end):
-        """Parse strings as date objects and compare them to get age"""
-        start = parser.parse(start)
-        end = parser.parse(end)
-
-        return relativedelta(end, start).years
 
     def get(key, field):
         """Looks up the requested data in the appropiate dictionary"""
         if field == "AGE":
             if cur_data[key].has_key("DEAT"):
-                return find_age(cur_data[key]["BIRT"], cur_data[key]["DEAT"])
+                return utils.find_age(cur_data[key]["BIRT"], cur_data[key]["DEAT"])
             else:
-                return find_age(cur_data[key]["BIRT"], time.strftime("%m %d %Y"))
+                return utils.find_age(cur_data[key]["BIRT"], time.strftime("%m %d %Y"))
         elif field == "ALIVE":
             return cur_data[key].has_key("DEAT")
         elif field == "HUSB_NAME":
@@ -133,8 +125,8 @@ def main(argv):
     gedcom = open(argv[1], 'r')
 
     data = parse(gedcom)
-    inds = buildTable(data[0], data[1], "individuals")
-    fams = buildTable(data[1], data[0], "families")
+    inds = build_table(data[0], data[1], "individuals")
+    fams = build_table(data[1], data[0], "families")
 
     print "\nIndividuals\n", inds
     print "\nFamilies\n", fams
