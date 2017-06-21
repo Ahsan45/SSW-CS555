@@ -3,6 +3,7 @@
 import sys
 import time
 from prettytable import PrettyTable
+import check_errors
 import utils
 
 def parse(gedcom):
@@ -125,6 +126,10 @@ def main(argv):
     gedcom = open(argv[1], 'r')
 
     data = parse(gedcom)
+
+    check_errors.check_indiv(data[0])
+    check_errors.check_fam(data[1])
+
     inds = build_table(data[0], data[1], "individuals")
     fams = build_table(data[1], data[0], "families")
 
