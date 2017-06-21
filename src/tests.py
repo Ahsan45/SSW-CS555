@@ -6,6 +6,7 @@ import birth_before_death
 import marr_before_div
 import lt150
 import birth_after_marr
+import date_before_now
 
 class TestUtils(unittest.TestCase):
     """Class for testing utility functions"""
@@ -143,6 +144,50 @@ class TestBirthAfterMarriage(unittest.TestCase):
         """test what happens when no marriage tag in family"""
         result = birth_after_marr.marr_before_child(self.families[0], self.families[1]['F04'])
         self.assertFalse(result)
+
+class TestDateBeforeNow(unittest.TestCase):
+    def setUp(self):
+        gedcom = open('inputs/date_before_now.txt', 'r')
+        self.indiv = parser.parse(gedcom)[0]
+    
+    def tearDown(self):
+        self.indiv = None
+
+    def test_date_true(self):
+        """Tests date comparer to be true"""
+        test = date_before_now.date_past('24 APR 2004')
+        self.assertTrue(test)
+
+    def test_date_false(self):
+        """Tests date comparer to be false"""
+        test = date_before_now.date_past('30 MAY 2022')
+        self.assertFalse(test)
+
+    def test_birth_true(self):
+        """Tests if birth is before today"""
+        test = date_before_now.birth_before_now(self.indiv['I01'])
+        self.assertTrue(test)
+    
+    def test_birth_false(self):
+        """Tests if birth is before today"""
+        test = date_before_now.birth_before_now(self.indiv['I02'])
+        self.assertFalse(test)
+
+    def test_no_death(self):
+        """Tests if death date doesn't exist"""
+        test = date_before_now.death_before_now(self.indiv['I03'])
+        self.assertTrue(test)
+    
+    def test_death_true(self):
+        """Tests if death is before today"""
+        test = date_before_now.death_before_now(self.indiv['I04'])
+        self.assertTrue(test)
+
+    def test_death_false(self):
+        """Tests if death date is before today"""
+        test = date_before_now.death_before_now(self.indiv['I07'])
+        self.assertFalse(test)
+	
 if __name__ == '__main__':
     unittest.main()		
 		
