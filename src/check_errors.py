@@ -5,6 +5,8 @@ import lt150
 import birth_after_marr
 import date_before_now
 import birth_before_marr
+import marr_before_death
+import divorce_before_death
 
 def check_indiv(indivs):
     """Checks for individual-level logical errors"""
@@ -39,3 +41,11 @@ def check_fam(fams, indivs):
             print "Error US04: Divorce occurs before marriage in this family ({})".format(key)
         if not birth_after_marr.marr_before_child(indivs, fams[key]):
             print "Error US08: Birth of child before marriage in this family: ({})".format(key)
+	if not marr_before_death.marr_before_death_husb(fams[key], indivs):
+		print "Error US05: Death date of husband occurs before marriage in this family ({})".format(key)
+	if not marr_before_death.marr_before_death_wife(fams[key], indivs):
+		print "Error US05: Death date of wife occurs before marriage in this family ({})".format(key)
+	if not divorce_before_death.divorce_before_death_husband(fams[key], indivs):
+		print "Error US06: Death date of husband occurs before divorce in this family ({})".format(key)
+	if not divorce_before_death.divorce_before_death_wife(fams[key], indivs):
+		print "Error US06: Death date of wife occurs before divorce in this family ({})".format(key)
