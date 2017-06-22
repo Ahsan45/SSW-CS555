@@ -42,10 +42,10 @@ def check_fam(fams, indivs):
         if not birth_after_marr.marr_before_child(indivs, fams[key]):
             print "Error US08: Birth of child before marriage in this family: ({})".format(key)
 	if not marr_before_death.marr_before_death_husb(fams[key], indivs):
-		print "Error US05: Death date of husband occurs before marriage in this family ({})".format(key)
+	    print "Error US05: Death date of husband occurs before marriage in this family ({})".format(key)
 	if not marr_before_death.marr_before_death_wife(fams[key], indivs):
-		print "Error US05: Death date of wife occurs before marriage in this family ({})".format(key)
-	if not divorce_before_death.divorce_before_death_husband(fams[key], indivs):
-		print "Error US06: Death date of husband occurs before divorce in this family ({})".format(key)
-	if not divorce_before_death.divorce_before_death_wife(fams[key], indivs):
-		print "Error US06: Death date of wife occurs before divorce in this family ({})".format(key)
+	    print "Error US05: Death date of wife occurs before marriage in this family ({})".format(key)
+	if not divorce_before_death.divorce_before_death_husb(fams[key], indivs):
+	    print "Error US06: Death date of husband occurs before divorce in this family ({})".format(key)
+   	if not divorce_before_death.divorce_before_death_wife(fams[key], indivs):
+	    print "Error US06: Death date of wife occurs before divorce in this family ({})".format(key)
