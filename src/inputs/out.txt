@@ -1,0 +1,33 @@
+
+Individuals
++-----+-------------------+--------+-------------+-----+-------+-------------+-------+--------+
+|  ID |        Name       | Gender |   Birthday  | Age | Alive |    Death    | Child | Spouse |
++-----+-------------------+--------+-------------+-----+-------+-------------+-------+--------+
+| I01 |     JOHN /DOE/    |   M    | 21 JUN 1994 |  23 | False |      NA     |  F01  |   NA   |
+| I02 |   WILLIAM /DOE/   |   M    | 19 DEC 2020 |  -3 | False |      NA     |  F01  |   NA   |
+| I03 |     BOB /DOE/     |   M    | 03 OCT 1963 |  53 | False |      NA     |  F02  |   NA   |
+| I04 |    MARY /JONES/   |   F    | 09 NOV 1996 |  20 | False |      NA     |   NA  |  F04   |
+| I05 |   BERNARD /DOE/   |   M    | 13 SEP 1940 |  76 | False |      NA     |   NA  |  F02   |
+| I06 |    JANICE /DOE/   |   F    | 24 NOV 1942 |  74 | False |      NA     |   NA  |  F02   |
+| I07 | JOHNATHAN /SMITH/ |   M    | 07 AUG 1800 | 189 |  True | 13 JAN 1990 |   NA  |  F03   |
+| I08 |   MEGAN /SMITH/   |   F    | 18 MAR 1941 |  76 | False |      NA     |   NA  |  F03   |
+| I09 |   DAVID /JONES/   |   M    | 17 APR 1962 |  29 |  True | 29 AUG 1991 |   NA  |  F04   |
+| I10 |  TIMOTHY /JONES/  |   M    | 01 APR 1989 |  0  |  True | 30 MAR 1989 |  F04  |   NA   |
++-----+-------------------+--------+-------------+-----+-------+-------------+-------+--------+
+
+Families
++-----+-------------+-------------+------------+-------------------+---------+---------------+----------------+
+|  ID |   Married   |   Divorced  | Husband ID |    Husband Name   | Wife ID |   Wife Name   |    Children    |
++-----+-------------+-------------+------------+-------------------+---------+---------------+----------------+
+| F01 | 05 MAY 1995 |      NA     |    I03     |     BOB /DOE/     |   I04   |  MARY /JONES/ | ['I01', 'I02'] |
+| F02 | 15 JUL 1960 |      NA     |    I05     |   BERNARD /DOE/   |   I06   |  JANICE /DOE/ |    ['I03']     |
+| F03 | 25 JUN 1963 |      NA     |    I07     | JOHNATHAN /SMITH/ |   I08   | MEGAN /SMITH/ |    ['I04']     |
+| F04 | 22 MAY 2020 | 27 JUL 1991 |    I09     |   DAVID /JONES/   |   I04   |  MARY /JONES/ |    ['I10']     |
++-----+-------------+-------------+------------+-------------------+---------+---------------+----------------+
+
+Error US07: Age of JOHNATHAN /SMITH/ greater than 150 years
+Error US03: Birth date of TIMOTHY /JONES/ (I10) occurs after his death date
+Error US08: Birth of child before marriage in this family: (F01)
+Error US04: Divorce occurs before marriage in this family (F04)
+Error US08: Birth of child before marriage in this family: (F04)
+
