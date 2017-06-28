@@ -1,4 +1,5 @@
 """Module for running tests"""
+import time
 import unittest
 import parser
 import utils
@@ -113,13 +114,12 @@ class TestLTOneFifty(unittest.TestCase):
         age = lt150.check150('09-17-1860','09-17-2017')
         self.assertFalse(age)
     def test_indiv_age_dead(self):
-        x,y = lt150.getDates(self.individuals['I07'])
-        age = lt150.check150(x,y)
-        self.assertTrue(age)
+        age = utils.find_age(self.individuals['I07']['BIRT'],self.individuals['I07']['DEAT'])
+        self.assertTrue(age <= 150)
+    """refactored test"""
     def test_indiv_age_alive(self):
-        x,y = lt150.getDates(self.individuals['I01'])
-        age = lt150.check150(x,y)
-        self.assertTrue(age)
+        age = utils.find_age(self.individuals['I01']['BIRT'],time.strftime('%d %b %Y'))
+        self.assertTrue(age <=150)
     def test_no_birth(self):
         age = lt150.check150(None,'5 May 1999')
         self.assertFalse(age)
@@ -189,5 +189,4 @@ class TestDateBeforeNow(unittest.TestCase):
         self.assertFalse(test)
 	
 if __name__ == '__main__':
-    unittest.main()		
-		
+    unittest.main()
