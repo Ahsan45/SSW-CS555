@@ -1,7 +1,7 @@
 """Module for checking if date came before current date"""
+import datetime
 from dateutil import parser
 from dateutil.relativedelta import relativedelta
-import datetime
 
 def date_past(date1):
     today = datetime.datetime.now().date()

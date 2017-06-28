@@ -10,11 +10,11 @@ def marr_before_death_husb(fam, indiv):
     if not 'DEAT' in indiv[husb]:
         return True
 
-    return date_first(indiv[husb]['MARR'], fam['DEAT'])
+    return date_first(fam['MARR'], indiv[husb]['DEAT'])
 
 def marr_before_death_wife(fam, indiv):
     wife = fam['WIFE']
     if not 'DEAT' in indiv[wife]:
         return True
 
-    return date_first(indiv[wife]['MARR'], fam['DEAT'])
+    return date_first(fam['MARR'], indiv[wife]['DEAT'])

@@ -103,43 +103,56 @@ class TestMarrBeforeDiv(unittest.TestCase):
 
 class TestLTOneFifty(unittest.TestCase):
     def setUp(self):
-        gedcom = open('inputs/input.txt','r')
+        gedcom = open('inputs/input.txt', 'r')
         self.individuals = parser.parse(gedcom)[0]
+
     def tearDown(self):
         self.individuals = None
+
     def test_age_less_than_150(self):
-        age = lt150.check150('09-04-1996','06-09-2017')
+        age = lt150.check150('09-04-1996', '06-09-2017')
         self.assertTrue(age)
+
     def test_age_greater_than_150(self):
-        age = lt150.check150('09-17-1860','09-17-2017')
+        age = lt150.check150('09-17-1860', '09-17-2017')
         self.assertFalse(age)
+
     def test_indiv_age_dead(self):
-        age = utils.find_age(self.individuals['I07']['BIRT'],self.individuals['I07']['DEAT'])
+        age = utils.find_age(self.individuals['I07']['BIRT'], self.individuals['I07']['DEAT'])
         self.assertTrue(age <= 150)
+
     """refactored test"""
     def test_indiv_age_alive(self):
-        age = utils.find_age(self.individuals['I01']['BIRT'],time.strftime('%d %b %Y'))
-        self.assertTrue(age <=150)
+        age = utils.find_age(self.individuals['I01']['BIRT'], time.strftime('%d %b %Y'))
+        self.assertTrue(age <= 150)
+
     def test_no_birth(self):
-        age = lt150.check150(None,'5 May 1999')
+        age = lt150.check150(None, '5 May 1999')
         self.assertFalse(age)
+
 class TestBirthAfterMarriage(unittest.TestCase):
     def setUp(self):
-        gedcom = open('inputs/birth_after_marriage.txt','r')
+        gedcom = open('inputs/birth_after_marriage.txt', 'r')
         self.families = parser.parse(gedcom)
+
     def tearDown(self):
         self.individuals = None
+
     def test_birth_after_marriage(self):
         """test that birth after marriage of family returns true"""
         result = birth_after_marr.marr_before_child(self.families[0], self.families[1]['F01'])
+        self.assertTrue(result)
+
     def test_birth_before_marriage(self):
         """test that birth before marriage of family returns false"""
         result = birth_after_marr.marr_before_child(self.families[0], self.families[1]['F02'])
         self.assertFalse(result)
+
     def test_no_birth(self):
         """test that individual with no birthday will return false"""
         result = birth_after_marr.marr_before_child(self.families[0], self.families[1]['F03'])
         self.assertFalse(result)
+
     def test_no_marr(self):
         """test what happens when no marriage tag in family"""
         result = birth_after_marr.marr_before_child(self.families[0], self.families[1]['F04'])
@@ -149,7 +162,7 @@ class TestDateBeforeNow(unittest.TestCase):
     def setUp(self):
         gedcom = open('inputs/date_before_now.txt', 'r')
         self.indiv = parser.parse(gedcom)[0]
-    
+
     def tearDown(self):
         self.indiv = None
 
@@ -167,7 +180,7 @@ class TestDateBeforeNow(unittest.TestCase):
         """Tests if birth is before today"""
         test = date_before_now.birth_before_now(self.indiv['I01'])
         self.assertTrue(test)
-    
+
     def test_birth_false(self):
         """Tests if birth is before today"""
         test = date_before_now.birth_before_now(self.indiv['I02'])
@@ -177,7 +190,7 @@ class TestDateBeforeNow(unittest.TestCase):
         """Tests if death date doesn't exist"""
         test = date_before_now.death_before_now(self.indiv['I03'])
         self.assertTrue(test)
-    
+
     def test_death_true(self):
         """Tests if death is before today"""
         test = date_before_now.death_before_now(self.indiv['I04'])
@@ -187,6 +200,6 @@ class TestDateBeforeNow(unittest.TestCase):
         """Tests if death date is before today"""
         test = date_before_now.death_before_now(self.indiv['I07'])
         self.assertFalse(test)
-	
+
 if __name__ == '__main__':
     unittest.main()
