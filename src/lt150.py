@@ -9,17 +9,11 @@ def check150(birth, death):
     if birth is None:
         return False
     birth = parser.parse(birth)
+
     if death is None:
         death = parser.parse(time.strftime("%d %b %Y"))
-        age = relativedelta(death.date(), birth.date()).years
-        if age <= 150:
-            return True
-        else:
-            return False
     else:
         death = parser.parse(death)
-        age = relativedelta(death, birth).years
-        if age <= 150:
-            return True
-        else:
-            return False
+
+    age = relativedelta(death, birth).years
+    return age <= 150

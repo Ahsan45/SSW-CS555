@@ -1,13 +1,11 @@
 """Module for checking if date came before current date"""
-import datetime
-from dateutil import parser
-from dateutil.relativedelta import relativedelta
+import time
+from utils import date_first
 
-def date_past(date1):
-    today = datetime.datetime.now().date()
-    date1 = parser.parse(date1)
+def date_past(date):
+    today = time.strftime("%d %b %Y")
 
-    return relativedelta(today, date1).days >= 0
+    return date_first(date, today)
 
 def birth_before_now(indiv):
     if not 'BIRT' in indiv:
