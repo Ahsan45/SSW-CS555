@@ -6,7 +6,10 @@ import time
 from dateutil.relativedelta import *
 from dateutil import parser 
 
-def getDates(person):
+"""
+Remove below method (similar method already exists in utils.py)
+
+    def getDates(person):
     birthday = None
     death = None
     if person.has_key("BIRT") and person.has_key("DEAT"):
@@ -15,7 +18,7 @@ def getDates(person):
     elif person.has_key("BIRT"):
         birthday = person["BIRT"]
         death = time.strftime("%d/%m/%Y")
-    return birthday, death
+    return birthday, death"""
 
 def check150(birth, death):
     if birth is None:
@@ -36,6 +39,3 @@ def check150(birth, death):
         else:
     	    return False
 #print check150('09-04-1996','06-09-2017')
-
-
-
