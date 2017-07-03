@@ -8,6 +8,7 @@ import marr_before_div
 import lt150
 import birth_after_marr
 import date_before_now
+import birth_before_marr
 
 class TestUtils(unittest.TestCase):
     """Class for testing utility functions"""
@@ -199,6 +200,34 @@ class TestDateBeforeNow(unittest.TestCase):
     def test_death_false(self):
         """Tests if death date is before today"""
         test = date_before_now.death_before_now(self.indiv['I07'])
+        self.assertFalse(test)
+
+class TestBirthBeforeMarr(unittest.TestCase):
+    def setUp(self):
+        gedcom = open('inputs/birth_before_marr.txt', 'r')
+        self.fam = main.parse(gedcom)
+    
+    def tearDown(self):
+        self.fam = None
+
+    def test_husb_birth_true(self):
+        """Tests if husband's birth happens before marriage"""
+        test = birth_before_marr.birth_before_marr_husb(self.fam[1]['F01'], self.fam[0])
+        self.assertTrue(test)
+
+    def test_husb_birth_false(self):
+        """Tests if husband's birth happens before marriage"""
+        test = birth_before_marr.birth_before_marr_husb(self.fam[1]['F02'], self.fam[0])
+        self.assertFalse(test)
+    
+    def test_wife_birth_true(self):
+        """Tests if wife's birth happens before marriage"""
+        test = birth_before_marr.birth_before_marr_wife(self.fam[1]['F03'], self.fam[0])
+        self.assertTrue(test)
+    
+    def test_wife_birth_false(self):
+        """Tests if wife's birth happens before marriage"""
+        test = birth_before_marr.birth_before_marr_wife(self.fam[1]['F02'], self.fam[0])
         self.assertFalse(test)
 
 if __name__ == '__main__':
