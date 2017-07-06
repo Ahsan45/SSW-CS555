@@ -11,6 +11,10 @@ import date_before_now
 import birth_before_marr
 import parents_not_too_old
 import no_bigamy
+import birth_before_parents_death
+import marr_after_14
+import male_last_names
+import no_marr_to_desc
 
 class TestUtils(unittest.TestCase):
     """Class for testing utility functions"""
@@ -298,6 +302,94 @@ class TestNoBigamy(unittest.TestCase):
         """Test when individual has not had more than one marriage"""
         test = no_bigamy.no_bigamy(self.fam[0]['I06'], self.fam[1])
         self.assertTrue(test)
+
+class TestBirthBeforeParentDeath(unittest.TestCase):
+    """Class for testing birth before parents' death feature"""
+    def setUp(self):
+        gedcom = open('inputs/birth_before_parents_death.txt', 'r')
+        self.fam = parser.parse(gedcom)
+
+    def tearDown(self):
+        self.fam = None
+
+    def test_father_death_within_9mo(self):
+        test = birth_before_parents_death.birth_before_parents_death(self.fam[0], self.fam[1]['F01'])
+        self.assertTrue(test)
+
+    def test_father_death_before_9mo(self):
+        test = birth_before_parents_death.birth_before_parents_death(self.fam[0], self.fam[1]['F02'])
+        self.assertFalse(test)
+
+    def test_mother_death_false(self):
+        test = birth_before_parents_death.birth_before_parents_death(self.fam[0], self.fam[1]['F03'])
+        self.assertFalse(test)
+
+class TestMarrAfter14(unittest.TestCase):
+    """Class for testing parents older than 14 feature"""
+    def setUp(self):
+        gedcom = open('inputs/marr_after_14.txt', 'r')
+        self.fam = parser.parse(gedcom)
+
+    def tearDown(self):
+        self.fam = None
+
+    def test_husb_older(self):
+        """Tests if husband is older than 14"""
+        test = marr_after_14.husb_marr_after_14(self.fam[0], self.fam[1]['F01'])
+        self.assertTrue(test)
+
+    def test_husb_younger(self):
+        """Tests if husband is younger than 14"""
+        test = marr_after_14.husb_marr_after_14(self.fam[0], self.fam[1]['F02'])
+        self.assertFalse(test)
+
+    def test_wife_older(self):
+        """Tests if wife is older than 14"""
+        test = marr_after_14.wife_marr_after_14(self.fam[0], self.fam[1]['F02'])
+        self.assertTrue(test)
+
+    def test_wife_younger(self):
+        """Tests if wife is younger than 14"""
+        test = marr_after_14.wife_marr_after_14(self.fam[0], self.fam[1]['F01'])
+        self.assertFalse(test)
+
+class TestMaleLastNames(unittest.TestCase):
+    """Class to test male surnames of family"""
+    def setUp(self):
+        gedcom = open('inputs/MN_Sprint2_input.txt', 'r')
+        self.indiv = parser.parse(gedcom)
+
+    def tearDown(self):
+        self.indiv = None
+
+    def test_male_names_true(self):
+        """Check true when all names the same"""
+        allsame = male_last_names.male_last_names(self.indiv[0], male_last_names.get_males(self.indiv[1]['F02'],self.indiv[0]))
+        self.assertTrue(allsame)
+
+    def test_male_names_false(self):
+        """Check male names not the same in family"""
+        notsame = male_last_names.male_last_names(self.indiv[0], male_last_names.get_males(self.indiv[1]['F01'], self.indiv[0]))
+        self.assertFalse(notsame)
+
+class TestNoMarrToDesc(unittest.TestCase):
+    """Class to test male surnames of family"""
+    def setUp(self):
+        gedcom = open('inputs/MN_Sprint2_input.txt', 'r')
+        self.indiv = parser.parse(gedcom)
+    
+    def tearDown(self):
+        self.indiv = None
+
+    def test_no_marr_desc(self):
+        """Check no marriage to descendents (trues)"""
+        test = no_marr_to_desc.no_marr_to_desc(self.indiv[0],self.indiv[1]['F01'], self.indiv[1])
+        self.assertTrue(test)
+
+    def test_marr_desc(self):
+        """Check marriage to descendents"""
+        test = no_marr_to_desc.no_marr_to_desc(self.indiv[0], self.indiv[1]['F02'], self.indiv[1])
+        self.assertFalse(test)
 
 if __name__ == '__main__':
     unittest.main()
