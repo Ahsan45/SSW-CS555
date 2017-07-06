@@ -10,7 +10,8 @@ from divorce_before_death import *
 from parents_not_too_old import *
 from birth_before_parents_death import *
 from marr_after_14 import *
-
+from male_last_names import * 
+from no_marr_to_desc import *
 def check_indiv(indivs):
     """Checks for individual-level logical errors"""
     for key in sorted(indivs.iterkeys()):
