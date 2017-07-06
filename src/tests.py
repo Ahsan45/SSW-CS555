@@ -11,6 +11,7 @@ import date_before_now
 import birth_before_marr
 import parents_not_too_old
 import birth_before_parents_death
+import marr_after_14
 
 class TestUtils(unittest.TestCase):
     """Class for testing utility functions"""
@@ -294,6 +295,35 @@ class TestBirthBeforeParentDeath(unittest.TestCase):
 
     def test_mother_death_false(self):
         test = birth_before_parents_death.birth_before_parents_death(self.fam[0], self.fam[1]['F03'])
+        self.assertFalse(test)
+        
+class TestMarrAfter14(unittest.TestCase):
+    """Class for testing parents older than 14 feature"""
+    def setUp(self):
+        gedcom = open('inputs/marr_after_14.txt', 'r')
+        self.fam = main.parse(gedcom)
+    
+    def tearDown(self):
+        self.fam = None
+    
+    def test_husb_older(self):
+        """Tests if husband is older than 14"""
+        test = marr_after_14.husb_marr_after_14(self.fam[0], self.fam[1]['F01'])
+        self.assertTrue(test)
+
+    def test_husb_younger(self):
+        """Tests if husband is younger than 14"""
+        test = marr_after_14.husb_marr_after_14(self.fam[0], self.fam[1]['F02'])
+        self.assertFalse(test)
+
+    def test_wife_older(self):
+        """Tests if wife is older than 14"""
+        test = marr_after_14.wife_marr_after_14(self.fam[0], self.fam[1]['F02'])
+        self.assertTrue(test)
+    
+    def test_wife_younger(self):
+        """Tests if wife is younger than 14"""
+        test = marr_after_14.wife_marr_after_14(self.fam[0], self.fam[1]['F01'])
         self.assertFalse(test)
         
 if __name__ == '__main__':
