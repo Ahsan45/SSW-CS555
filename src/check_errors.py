@@ -69,6 +69,6 @@ def check_fam(fams, indivs):
         if not no_marr_to_desc(indivs, fams[key], fams):
             print "Error US17: Marriage to descendents found: ({})".format(key)
         if not husb_marr_after_14(indivs, fams[key]):
-            print "Error US10: Husband in this family ({}) was younger than 14 when married.".format(key)
+            print "Anomaly US10: Husband in this family ({}) was younger than 14 when married.".format(key)
         if not wife_marr_after_14(indivs, fams[key]):
-            print "Error US10: Wife in this family ({}) was younger than 14 when married.".format(key)
+            print "Anomaly US10: Wife in this family ({}) was younger than 14 when married.".format(key)
