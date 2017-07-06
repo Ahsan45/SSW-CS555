@@ -11,22 +11,22 @@ def build_table(cur_data, ref_data, data_type):
     def get(key, field):
         """Looks up the requested data in the appropiate dictionary"""
         if field == "AGE":
-            if cur_data[key].has_key("DEAT"):
+            if "DEAT" in cur_data[key]:
                 return utils.find_age(cur_data[key]["BIRT"], cur_data[key]["DEAT"])
             else:
                 return utils.find_age(cur_data[key]["BIRT"], time.strftime("%m %d %Y"))
         elif field == "ALIVE":
-            return cur_data[key].has_key("DEAT")
+            return "DEAT" in cur_data[key]
         elif field == "HUSB_NAME":
-            if cur_data[key].has_key("HUSB"):
+            if "HUSB" in cur_data[key]:
                 return ref_data[cur_data[key]["HUSB"]]["NAME"]
             else: return "NA"
         elif field == "WIFE_NAME":
-            if cur_data[key].has_key("WIFE"):
+            if "WIFE" in cur_data[key]:
                 return ref_data[cur_data[key]["WIFE"]]["NAME"]
             else: return "NA"
 
-        return cur_data[key][field] if cur_data[key].has_key(field) else "NA"
+        return cur_data[key][field] if field in cur_data[key] else "NA"
 
     if data_type == "individuals":
         table.field_names = ["ID", "Name", "Gender", "Birthday","Age",

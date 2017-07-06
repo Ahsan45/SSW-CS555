@@ -3,11 +3,11 @@ from utils import date_first
 
 def birth_before_death(indiv):
     """Checks if the individuals birth is before their death"""
-    if not indiv.has_key('BIRT') and not indiv.has_key('DEAT'):
+    if 'BIRT' not in indiv and 'DEAT' not in indiv:
         return True
-    elif not indiv.has_key('BIRT'):
+    elif 'BIRT' not in indiv:
         return False
-    elif not indiv.has_key('DEAT'):
+    elif 'DEAT' not in indiv:
         return True
 
     return date_first(indiv['BIRT'], indiv['DEAT'])

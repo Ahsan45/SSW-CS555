@@ -3,11 +3,11 @@ from utils import date_first
 
 def marr_before_div(fam):
     """Checks if the family's marriage is before its divorce"""
-    if not fam.has_key('MARR') and not fam.has_key('DIV'):
+    if 'MARR' not in fam and 'DIV' not in fam:
         return True
-    elif not fam.has_key('MARR'):
+    elif 'MARR' not in fam:
         return False
-    elif not fam.has_key('DIV'):
+    elif 'DIV' not in fam:
         return True
 
     return date_first(fam['MARR'], fam['DIV'])
