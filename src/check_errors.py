@@ -8,6 +8,7 @@ from birth_before_marr import *
 from marr_before_death import *
 from divorce_before_death import *
 from parents_not_too_old import *
+from birth_before_parents_death import *
 
 def check_indiv(indivs):
     """Checks for individual-level logical errors"""
@@ -54,3 +55,5 @@ def check_fam(fams, indivs):
             print "Error US12: Husband in this family ({}) is too old to be a father.".format(key)
         if not wife_not_too_old(fams[key], indivs):
             print "Error US12: Wife in this family ({}) is too old to be a mother.".format(key)
+        if not birth_before_parents_death(indivs, fams[key]):
+            print "Error US09: Death of parent occurs before birth of child is possible in this family ({})".format(key)
