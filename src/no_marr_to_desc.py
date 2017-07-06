@@ -17,7 +17,6 @@ def get_desc(individuals, family, allFam):
     """Function finds children within family, calls get_lower_desc if grandchildren found"""
     children = family['CHIL']
 
-
     if children == []:
 
         return children
@@ -25,14 +24,15 @@ def get_desc(individuals, family, allFam):
         families = []
         for kid in children:
             if 'FAMS' in individuals[kid]:
-                families.append(individuals[kid]['FAMS'])
+                families.extend(individuals[kid]['FAMS'])
         if families == []:
             return children
-        for fam in families:
+        for fam in map(str, families):
 
             return children + get_lower_desc(fam, allFam)
 
 def get_lower_desc(family, families):
     """Function finds children, called by get_desc when looking for grandchildren/great-grandchildren"""
-    desc = families[family]['CHIL']
+    desc = []
+    desc.extend(families[family]['CHIL'])
     return desc
