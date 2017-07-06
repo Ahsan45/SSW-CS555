@@ -7,6 +7,7 @@ import date_before_now
 import birth_before_marr
 import marr_before_death
 import divorce_before_death
+import parents_not_too_old
 
 def check_indiv(indivs):
     """Checks for individual-level logical errors"""
@@ -49,3 +50,5 @@ def check_fam(fams, indivs):
             print "Error US06: Death date of husband occurs before divorce in this family ({})".format(key)
         if not divorce_before_death.divorce_before_death_wife(fams[key], indivs):
             print "Error US06: Death date of wife occurs before divorce in this family ({})".format(key)
+        if not parents_not_too_old.parents_not_too_old(fams[key], indivs):
+            print "Error US12: One or more parents in this family ({}) are too old.".format(key)

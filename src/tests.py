@@ -9,6 +9,7 @@ import lt150
 import birth_after_marr
 import date_before_now
 import birth_before_marr
+import parents_not_too_old
 
 class TestUtils(unittest.TestCase):
     """Class for testing utility functions"""
@@ -229,6 +230,40 @@ class TestBirthBeforeMarr(unittest.TestCase):
         """Tests if wife's birth happens before marriage"""
         test = birth_before_marr.birth_before_marr_wife(self.fam[1]['F02'], self.fam[0])
         self.assertFalse(test)
+
+class TestParentsNotTooOld(unittest.TestCase):
+    """Class for testing the parents not too old feature"""
+    def setUp(self):
+        gedcom = open('inputs/parents_too_old.txt')
+        self.fam = parser.parse(gedcom)
+
+    def tearDown(self):
+        self.fam = None
+
+    def test_husb_too_old(self):
+        """Tests when father is too old"""
+        test = parents_not_too_old.parents_not_too_old(self.fam[1]['F01'], self.fam[0])
+        self.assertFalse(test)
+
+    def test_wife_too_old(self):
+        """Tests when mother is too old"""
+        test = parents_not_too_old.parents_not_too_old(self.fam[1]['F01'], self.fam[0])
+        self.assertFalse(test)
+
+    def test_husb_not_too_old(self):
+        """Tests when father is not too old"""
+        test = parents_not_too_old.parents_not_too_old(self.fam[1]['F02'], self.fam[0])
+        self.assertTrue(test)
+
+    def test_wife_not_too_old(self):
+        """Tests when mother is not too old"""
+        test = parents_not_too_old.parents_not_too_old(self.fam[1]['F02'], self.fam[0])
+        self.assertTrue(test)
+
+    def test_no_children(self):
+        """Tests when their are no children in family"""
+        test = parents_not_too_old.parents_not_too_old(self.fam[1]['F04'], self.fam[0])
+        self.assertTrue(test)
 
 if __name__ == '__main__':
     unittest.main()
