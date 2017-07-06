@@ -10,6 +10,7 @@ import birth_after_marr
 import date_before_now
 import birth_before_marr
 import parents_not_too_old
+import birth_before_parents_death
 
 class TestUtils(unittest.TestCase):
     """Class for testing utility functions"""
@@ -274,5 +275,26 @@ class TestParentsNotTooOld(unittest.TestCase):
         test2 = parents_not_too_old.wife_not_too_old(self.fam[1]['F04'], self.fam[0])
         self.assertTrue(test1 and test2)
 
+class TestBirthBeforeParentDeath(unittest.TestCase):
+    """Class for testing birth before parents' death feature"""
+    def setUp(self):
+        gedcom = open('inputs/birth_before_parents_death.txt', 'r')
+        self.fam = main.parse(gedcom)
+    
+    def tearDown(self):
+        self.fam = None
+    
+    def test_father_death_within_9mo(self):
+        test = birth_before_parents_death.birth_before_parents_death(self.fam[0], self.fam[1]['F01'])
+        self.assertTrue(test)
+
+    def test_father_death_before_9mo(self):
+        test = birth_before_parents_death.birth_before_parents_death(self.fam[0], self.fam[1]['F02'])
+        self.assertFalse(test)
+
+    def test_mother_death_false(self):
+        test = birth_before_parents_death.birth_before_parents_death(self.fam[0], self.fam[1]['F03'])
+        self.assertFalse(test)
+        
 if __name__ == '__main__':
     unittest.main()
