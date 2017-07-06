@@ -28,10 +28,16 @@ def parse(gedcom):
     def add_to_dict(cur_key, tag, args):
         """Add current line to appropiate dictionary"""
         if cur_key[0] == "I":
-            individuals[cur_key][tag] = args
+            if tag == "FAMS":
+                if tag not in individuals[cur_key]:
+                    individuals[cur_key][tag] = [args]
+                else:
+                    individuals[cur_key][tag].append(args)
+            else:
+                individuals[cur_key][tag] = args
         else:
             if tag == "CHIL":
-                if not families[cur_key].has_key(tag):
+                if tag not in families[cur_key]:
                     families[cur_key][tag] = [args]
                 else:
                     families[cur_key][tag].append(args)
@@ -55,10 +61,12 @@ def parse(gedcom):
             if level == "0":
                 if tag == "INDI":
                     cur_key = args
-                    individuals[args] = {}
+                    if args not in individuals:
+                        individuals[args] = {}
                 if tag == "FAM":
                     cur_key = args
-                    families[args] = {}
+                    if args not in families:
+                        families[args] = {}
             elif level == "1":
                 if tag == "BIRT" or tag == "DEAT" or tag == "MARR" or tag == "DIV":
                     add_to_dict(cur_key, tag, "")
