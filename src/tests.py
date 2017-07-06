@@ -137,7 +137,7 @@ class TestBirthAfterMarriage(unittest.TestCase):
         self.families = parser.parse(gedcom)
 
     def tearDown(self):
-        self.individuals = None
+        self.families = None
 
     def test_birth_after_marriage(self):
         """test that birth after marriage of family returns true"""
@@ -205,7 +205,7 @@ class TestDateBeforeNow(unittest.TestCase):
 class TestBirthBeforeMarr(unittest.TestCase):
     def setUp(self):
         gedcom = open('inputs/birth_before_marr.txt', 'r')
-        self.fam = main.parse(gedcom)
+        self.fam = parser.parse(gedcom)
     
     def tearDown(self):
         self.fam = None
