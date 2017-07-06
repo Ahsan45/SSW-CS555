@@ -313,14 +313,17 @@ class TestBirthBeforeParentDeath(unittest.TestCase):
         self.fam = None
 
     def test_father_death_within_9mo(self):
+        """Test when father did not die before conception of child"""
         test = birth_before_parents_death.birth_before_parents_death(self.fam[0], self.fam[1]['F01'])
         self.assertTrue(test)
 
     def test_father_death_before_9mo(self):
+        """Test when father died before conception of child"""
         test = birth_before_parents_death.birth_before_parents_death(self.fam[0], self.fam[1]['F02'])
         self.assertFalse(test)
 
     def test_mother_death_false(self):
+        """Test when mother died before birth of child"""
         test = birth_before_parents_death.birth_before_parents_death(self.fam[0], self.fam[1]['F03'])
         self.assertFalse(test)
 

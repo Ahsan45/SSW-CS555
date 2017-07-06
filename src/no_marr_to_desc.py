@@ -1,7 +1,7 @@
 """Checks no marriages to descendants"""
 
 def no_marr_to_desc(individuals, family, families):
-    """main function to check children/descendents against Husband/Wife of family"""
+    """Main function to check children/descendents against Husband/Wife of family"""
     husband = family['HUSB']
     wife = family['WIFE']
     descendents = get_desc(individuals, family, families)
