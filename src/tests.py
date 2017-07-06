@@ -250,28 +250,29 @@ class TestParentsNotTooOld(unittest.TestCase):
 
     def test_husb_too_old(self):
         """Tests when father is too old"""
-        test = parents_not_too_old.parents_not_too_old(self.fam[1]['F01'], self.fam[0])
+        test = parents_not_too_old.husb_not_too_old(self.fam[1]['F01'], self.fam[0])
         self.assertFalse(test)
 
     def test_wife_too_old(self):
         """Tests when mother is too old"""
-        test = parents_not_too_old.parents_not_too_old(self.fam[1]['F01'], self.fam[0])
+        test = parents_not_too_old.wife_not_too_old(self.fam[1]['F01'], self.fam[0])
         self.assertFalse(test)
 
     def test_husb_not_too_old(self):
         """Tests when father is not too old"""
-        test = parents_not_too_old.parents_not_too_old(self.fam[1]['F02'], self.fam[0])
+        test = parents_not_too_old.husb_not_too_old(self.fam[1]['F02'], self.fam[0])
         self.assertTrue(test)
 
     def test_wife_not_too_old(self):
         """Tests when mother is not too old"""
-        test = parents_not_too_old.parents_not_too_old(self.fam[1]['F02'], self.fam[0])
+        test = parents_not_too_old.wife_not_too_old(self.fam[1]['F02'], self.fam[0])
         self.assertTrue(test)
 
     def test_no_children(self):
         """Tests when their are no children in family"""
-        test = parents_not_too_old.parents_not_too_old(self.fam[1]['F04'], self.fam[0])
-        self.assertTrue(test)
+        test1 = parents_not_too_old.husb_not_too_old(self.fam[1]['F04'], self.fam[0])
+        test2 = parents_not_too_old.wife_not_too_old(self.fam[1]['F04'], self.fam[0])
+        self.assertTrue(test1 and test2)
 
 if __name__ == '__main__':
     unittest.main()

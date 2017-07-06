@@ -50,5 +50,7 @@ def check_fam(fams, indivs):
             print "Error US06: Death date of husband occurs before divorce in this family ({})".format(key)
         if not divorce_before_death_wife(fams[key], indivs):
             print "Error US06: Death date of wife occurs before divorce in this family ({})".format(key)
-        if not parents_not_too_old(fams[key], indivs):
-            print "Error US12: One or more parents in this family ({}) are too old.".format(key)
+        if not husb_not_too_old(fams[key], indivs):
+            print "Error US12: Husband in this family ({}) is too old to be a father.".format(key)
+        if not wife_not_too_old(fams[key], indivs):
+            print "Error US12: Wife in this family ({}) is too old to be a mother.".format(key)
