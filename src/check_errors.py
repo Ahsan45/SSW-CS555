@@ -9,6 +9,7 @@ from marr_before_death import *
 from divorce_before_death import *
 from parents_not_too_old import *
 from birth_before_parents_death import *
+from marr_after_14 import *
 
 def check_indiv(indivs):
     """Checks for individual-level logical errors"""
@@ -61,3 +62,7 @@ def check_fam(fams, indivs):
             print "Error US16: Male surnames not consistent in this family ({})".format(key)
         if not no_marr_to_desc.no_marr_to_desc(indivs, fams[key], fams):
             print "Error US17: Marriage to descendents found: ({})".format(key)
+        if not husb_marr_after_14(indivs, fams[key]):
+            print "Error US10: Husband in this family ({}) was younger than 14 when married.".format(key)
+        if not wife_marr_after_14(indivs, fams[key]):
+            print "Error US10: Wife in this family ({}) was younger than 14 when married.".format(key)
