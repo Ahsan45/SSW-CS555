@@ -10,6 +10,7 @@ import birth_after_marr
 import date_before_now
 import birth_before_marr
 import parents_not_too_old
+import no_bigamy
 
 class TestUtils(unittest.TestCase):
     """Class for testing utility functions"""
@@ -273,6 +274,30 @@ class TestParentsNotTooOld(unittest.TestCase):
         test1 = parents_not_too_old.husb_not_too_old(self.fam[1]['F04'], self.fam[0])
         test2 = parents_not_too_old.wife_not_too_old(self.fam[1]['F04'], self.fam[0])
         self.assertTrue(test1 and test2)
+
+class TestNoBigamy(unittest.TestCase):
+    """Class for testing if an individual participates in bigamy"""
+    def setUp(self):
+        gedcom = open('inputs/bigamy.txt')
+        self.fam = parser.parse(gedcom)
+
+    def tearDown(self):
+        self.fam = None
+
+    def test_bigamy_with_3_marriages(self):
+        """Test when individuals has been in 3 families"""
+        test = no_bigamy.no_bigamy(self.fam[0]['I04'], self.fam[1])
+        self.assertEqual(('F01', 'F05'), test)
+
+    def test_bigamy_with_2_marriages(self):
+        """Test when individuals has been in 2 families"""
+        test = no_bigamy.no_bigamy(self.fam[0]['I05'], self.fam[1])
+        self.assertEqual(('F06', 'F02'), test)
+
+    def test_no_bigamy(self):
+        """Test when individual has not had more than one marriage"""
+        test = no_bigamy.no_bigamy(self.fam[0]['I06'], self.fam[1])
+        self.assertTrue(test)
 
 if __name__ == '__main__':
     unittest.main()

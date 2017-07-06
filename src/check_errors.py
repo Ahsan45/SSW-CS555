@@ -8,8 +8,9 @@ from birth_before_marr import *
 from marr_before_death import *
 from divorce_before_death import *
 from parents_not_too_old import *
+from no_bigamy import *
 
-def check_indiv(indivs):
+def check_indiv(indivs, fams):
     """Checks for individual-level logical errors"""
     for key in sorted(indivs.iterkeys()):
         if not birth_before_now(indivs[key]):
@@ -26,6 +27,9 @@ def check_indiv(indivs):
         if not "DEAT" in indivs[key]:
             if not check150(indivs[key]["BIRT"], None):
                 print "Error US07: Age of {} is greater than 150 years".format(indivs[key]["NAME"])
+        if no_bigamy(indivs[key], fams) != True:
+            print ("Anomaly US11: Individual ({})'s marriage in {} overlaps with their marriage in {}"
+                   .format(key, no_bigamy(indivs[key], fams)[0], no_bigamy(indivs[key], fams)[1]))
 
 def check_fam(fams, indivs):
     """Checks for family-level logical errors"""

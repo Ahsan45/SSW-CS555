@@ -16,7 +16,7 @@ def build_table(cur_data, ref_data, data_type):
             else:
                 return utils.find_age(cur_data[key]["BIRT"], time.strftime("%m %d %Y"))
         elif field == "ALIVE":
-            return "DEAT" in cur_data[key]
+            return "DEAT" not in cur_data[key]
         elif field == "HUSB_NAME":
             if "HUSB" in cur_data[key]:
                 return ref_data[cur_data[key]["HUSB"]]["NAME"]
