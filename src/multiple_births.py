@@ -18,3 +18,4 @@ def multiple_births(indiv, fam):
                 i+=1
             if i == 6:
                 return False
+    return True
