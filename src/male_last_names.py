@@ -18,8 +18,9 @@ def get_males(families, people):
     familyMen = []
     familyMen.append(families['HUSB'])
     children = []
-    children = families['CHIL']
-    for kid in children:
-        if people[kid]['SEX'] == 'M':
-            familyMen.append(kid) 
+    if 'CHIL' in families:
+        children = families['CHIL']
+        for kid in children:
+            if people[kid]['SEX'] == 'M':
+                familyMen.append(kid) 
     return familyMen
