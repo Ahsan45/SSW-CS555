@@ -37,5 +37,6 @@ def get_desc(individuals, family, allFam):
 def get_lower_desc(family, families):
     """Function finds children, called by get_desc when looking for grandchildren/great-grandchildren"""
     desc = []
-    desc.extend(families[family]['CHIL'])
+    if 'CHIL 'in family:
+        desc.extend(families[family]['CHIL'])
     return desc
