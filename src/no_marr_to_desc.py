@@ -15,8 +15,11 @@ def no_marr_to_desc(individuals, family, families):
 
 def get_desc(individuals, family, allFam):
     """Function finds children within family, calls get_lower_desc if grandchildren found"""
-    children = family['CHIL']
-
+    if 'CHIL' in family:    
+        children = family['CHIL']
+    else:
+        children = [] 
+        
     if children == []:
 
         return children
