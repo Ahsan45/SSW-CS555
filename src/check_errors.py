@@ -15,6 +15,7 @@ from male_last_names import *
 from no_marr_to_desc import *
 from fewer_than_15_siblings import *
 from multiple_births import *
+from unique_name_bday import *
 
 def check_indiv(indivs, fams):
     """Checks for individual-level logical errors"""
@@ -36,6 +37,8 @@ def check_indiv(indivs, fams):
         if no_bigamy(indivs[key], fams) != True:
             print ("Anomaly US11: Individual ({})'s marriage in {} overlaps with their marriage in {}"
                    .format(key, no_bigamy(indivs[key], fams)[0], no_bigamy(indivs[key], fams)[1]))
+        if not unique_name_bday(indivs[key],indivs):
+            print "Anomaly US23: Multiple Individuals with same name and birthday: {}".format(indivs[key]['NAME'])
 
 def check_fam(fams, indivs):
     """Checks for family-level logical errors"""
@@ -78,3 +81,4 @@ def check_fam(fams, indivs):
             print "Anomaly US15: There are at least 15 siblings in this family ({}).".format(key)
         if not multiple_births(indivs, fams[key]):
             print "Anomaly US14: There are more than 5 siblings born at the same time in this family ({}).".format(key)
+
