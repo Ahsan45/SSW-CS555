@@ -5,9 +5,10 @@
 
 from collections import Counter
 
-def unique_family(key, fams):
-    for family in fams:
-        if key['HUSB'] == family['HUSB'] and key['WIFE'] == family['WIFE'] and key['MARR'] == family['MARR']
-            return False
+def unique_family(family, fams):
+    for key in sorted(fams.keys()):
+        if family != key:
+            if fams[family]['HUSB'] == fams[key]['HUSB'] and fams[family]['WIFE'] == fams[key]['WIFE'] and fams[family]['MARR'] == fams[key]['MARR']:
+                return False
 
     return True
