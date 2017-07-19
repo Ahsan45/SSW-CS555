@@ -17,6 +17,7 @@ import male_last_names
 import no_marr_to_desc
 import aunts_and_uncles
 import cousins_not_marry
+import siblings_not_marry
 
 class TestUtils(unittest.TestCase):
     """Class for testing utility functions"""
@@ -444,5 +445,29 @@ class TestCousinsNotMarry(unittest.TestCase):
         test = cousins_not_marry.cousins_not_marry('I11', self.fam[0], self.fam[1])
         self.assertFalse(test)
 
+class TestSiblingsNotMarry(unittest.TestCase):
+    """Class to test that siblings have not married"""
+    def setUp(self):
+        gedcom = open('inputs/siblings_not_marry.txt', 'r')
+        self.fam = main.parse(gedcom)
+    
+    def tearDown(self):
+        self.fam = None
+    
+    def test_siblings_true(self):
+        """Checks if individual is not married to a sibling"""
+        test = siblings_not_marry.siblings_not_marry('I03', self.fam[0], self.fam[1])
+        self.assertTrue(test)
+
+    def test_siblings_false(self):
+        """Checks if individual is married to a sibling"""
+        test = siblings_not_marry.siblings_not_marry('I04', self.fam[0], self.fam[1])
+        self.assertFalse(test)
+
+    def test_no_siblings(self):
+        """Checks if there are no siblings"""
+        test = siblings_not_marry.siblings_not_marry('I03', self.fam[0], self.fam[1])
+        self.assertTrue(test)
+        
 if __name__ == '__main__':
     unittest.main()
