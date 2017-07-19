@@ -20,6 +20,8 @@ from aunts_and_uncles import *
 from cousins_not_marry import *
 from siblings_not_marry import *
 from correct_gender import *
+from unique_family import *
+from unique_firstname import *
 
 def check_indiv(indivs, fams):
     """Checks for individual-level logical errors"""
@@ -95,4 +97,8 @@ def check_fam(fams, indivs):
             print "Error US21: Husband is not the correct gender in this family ({})".format(key)
         if not wife_correct_gender(indivs, fams[key]):
             print "Error US21: Wife is not the correct gender in this family ({})".format(key)
+        if not unique_family(key, fams):
+            print "Error US24: Family is not unique ({})".format(key)
+        if not unique_firstname(indivs, fams[key]):
+            print "Error US25: First Name is not unique ({})".format(key)
 
