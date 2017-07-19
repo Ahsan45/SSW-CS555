@@ -450,11 +450,11 @@ class TestSiblingsNotMarry(unittest.TestCase):
     """Class to test that siblings have not married"""
     def setUp(self):
         gedcom = open('inputs/siblings_not_marry.txt', 'r')
-        self.fam = main.parse(gedcom)
-    
+        self.fam = parser.parse(gedcom)
+
     def tearDown(self):
         self.fam = None
-    
+
     def test_siblings_true(self):
         """Checks if individual is not married to a sibling"""
         test = siblings_not_marry.siblings_not_marry('I03', self.fam[0], self.fam[1])
@@ -474,11 +474,11 @@ class TestCorrectGender(unittest.TestCase):
     """Class to test that spouses are correct gender"""
     def setUp(self):
         gedcom = open('inputs/correct_gender.txt', 'r')
-        self.fam = main.parse(gedcom)
-    
+        self.fam = parser.parse(gedcom)
+
     def tearDown(self):
         self.fam = None
-    
+
     def test_husb_correct_gender(self):
         """Checks if husband is the correct gender"""
         test = correct_gender.husb_correct_gender(self.fam[0], self.fam[1]['F01'])
