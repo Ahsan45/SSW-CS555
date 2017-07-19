@@ -18,6 +18,7 @@ import no_marr_to_desc
 import aunts_and_uncles
 import cousins_not_marry
 import siblings_not_marry
+import correct_gender
 
 class TestUtils(unittest.TestCase):
     """Class for testing utility functions"""
@@ -468,6 +469,35 @@ class TestSiblingsNotMarry(unittest.TestCase):
         """Checks if there are no siblings"""
         test = siblings_not_marry.siblings_not_marry('I03', self.fam[0], self.fam[1])
         self.assertTrue(test)
+        
+class TestCorrectGender(unittest.TestCase):
+    """Class to test that spouses are correct gender"""
+    def setUp(self):
+        gedcom = open('inputs/correct_gender.txt', 'r')
+        self.fam = main.parse(gedcom)
+    
+    def tearDown(self):
+        self.fam = None
+    
+    def test_husb_correct_gender(self):
+        """Checks if husband is the correct gender"""
+        test = correct_gender.husb_correct_gender(self.fam[0], self.fam[1]['F01'])
+        self.assertTrue(test)
+
+    def test_husb_wrong_gender(self):
+        """Checks if husband is the correct gender"""
+        test = correct_gender.husb_correct_gender(self.fam[0], self.fam[1]['F03'])
+        self.assertFalse(test)
+
+    def test_wife_correct_gender(self):
+        """Checks if wife is the correct gender"""
+        test = correct_gender.wife_correct_gender(self.fam[0], self.fam[1]['F02'])
+        self.assertTrue(test)
+
+    def test_wife_wrong_gender(self):
+        """Checks if wife is the correct gender"""
+        test = correct_gender.wife_correct_gender(self.fam[0], self.fam[1]['F04'])
+        self.assertFalse(test)
         
 if __name__ == '__main__':
     unittest.main()
