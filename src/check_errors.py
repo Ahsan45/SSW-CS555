@@ -17,6 +17,7 @@ from fewer_than_15_siblings import *
 from multiple_births import *
 from aunts_and_uncles import *
 from cousins_not_marry import *
+from siblings_not_marry import *
 
 def check_indiv(indivs, fams):
     """Checks for individual-level logical errors"""
@@ -42,7 +43,9 @@ def check_indiv(indivs, fams):
             print("Anomaly US20: Inidivdual ({}) has married their niece/nephew").format(key)
         if not cousins_not_marry(key, indivs, fams):
             print("Anomaly US19: Individual ({}) has married their first cousin").format(key)
-
+        if not siblings_not_marry(key, indivs, fams):
+            print "Anomaly US18: Individual ({}) has married their sibling".format(key)
+            
 def check_fam(fams, indivs):
     """Checks for family-level logical errors"""
     for key in sorted(fams.iterkeys()):
