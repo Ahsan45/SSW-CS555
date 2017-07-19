@@ -18,6 +18,7 @@ from multiple_births import *
 from aunts_and_uncles import *
 from cousins_not_marry import *
 from siblings_not_marry import *
+from correct_gender import *
 
 def check_indiv(indivs, fams):
     """Checks for individual-level logical errors"""
@@ -87,3 +88,7 @@ def check_fam(fams, indivs):
             print "Anomaly US15: There are at least 15 siblings in this family ({}).".format(key)
         if not multiple_births(indivs, fams[key]):
             print "Anomaly US14: There are more than 5 siblings born at the same time in this family ({}).".format(key)
+        if not husb_correct_gender(indivs, fams[key]):
+            print "Error US21: Husband is not the correct gender in this family ({})".format(key)
+        if not wife_correct_gender(indivs, fams[key]):
+            print "Error US21: Wife is not the correct gender in this family ({})".format(key)
