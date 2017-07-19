@@ -22,8 +22,3 @@ def check_ID_conflict(args, objects):
         return False
     else:
         return True
-
-
-
-    
-        

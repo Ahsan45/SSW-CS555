@@ -7,7 +7,9 @@ def date_first(date1, date2):
     date1 = parser.parse(date1)
     date2 = parser.parse(date2)
 
-    return relativedelta(date2, date1).days >= 0
+    return (relativedelta(date2, date1).days >= 0 and
+            relativedelta(date2, date1).months >= 0 and
+            relativedelta(date2, date1).years >= 0)
 
 def find_age(start, end):
     """Parse strings as date objects and compare them to get age"""
