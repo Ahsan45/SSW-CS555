@@ -15,6 +15,7 @@ import birth_before_parents_death
 import marr_after_14
 import male_last_names
 import no_marr_to_desc
+import aunts_and_uncles
 
 class TestUtils(unittest.TestCase):
     """Class for testing utility functions"""
@@ -376,11 +377,11 @@ class TestMaleLastNames(unittest.TestCase):
         self.assertFalse(notsame)
 
 class TestNoMarrToDesc(unittest.TestCase):
-    """Class to test male surnames of family"""
+    """Class to test no marriage to descendents"""
     def setUp(self):
         gedcom = open('inputs/MN_Sprint2_input.txt', 'r')
         self.indiv = parser.parse(gedcom)
-    
+
     def tearDown(self):
         self.indiv = None
 
@@ -392,6 +393,30 @@ class TestNoMarrToDesc(unittest.TestCase):
     def test_marr_desc(self):
         """Check marriage to descendents"""
         test = no_marr_to_desc.no_marr_to_desc(self.indiv[0], self.indiv[1]['F02'], self.indiv[1])
+        self.assertFalse(test)
+
+class TestAuntAndUncles(unittest.TestCase):
+    """Class to test that aunts and uncles have not married their nieces and nephews"""
+    def setUp(self):
+        gedcom = open('inputs/aunts_and_uncles.txt', 'r')
+        self.fam = parser.parse(gedcom)
+
+    def tearDown(self):
+        self.fam = None
+
+    def test_no_aunts_and_uncles(self):
+        """Checks when individual is not an aunt or uncle"""
+        test = aunts_and_uncles.aunts_and_uncles('I01', self.fam[0], self.fam[1])
+        self.assertTrue(test)
+
+    def test_aunts_and_uncles_true(self):
+        """Checks when individual is not married to a niece/nephew"""
+        test = aunts_and_uncles.aunts_and_uncles('I15', self.fam[0], self.fam[1])
+        self.assertTrue(test)
+
+    def test_aunts_and_uncles_false(self):
+        """Checks when individual is married to a niece/nephew"""
+        test = aunts_and_uncles.aunts_and_uncles('I04', self.fam[0], self.fam[1])
         self.assertFalse(test)
 
 if __name__ == '__main__':

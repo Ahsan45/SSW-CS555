@@ -15,6 +15,7 @@ from male_last_names import *
 from no_marr_to_desc import *
 from fewer_than_15_siblings import *
 from multiple_births import *
+from aunts_and_uncles import *
 
 def check_indiv(indivs, fams):
     """Checks for individual-level logical errors"""
@@ -36,6 +37,8 @@ def check_indiv(indivs, fams):
         if no_bigamy(indivs[key], fams) != True:
             print ("Anomaly US11: Individual ({})'s marriage in {} overlaps with their marriage in {}"
                    .format(key, no_bigamy(indivs[key], fams)[0], no_bigamy(indivs[key], fams)[1]))
+        if not aunts_and_uncles(key, indivs, fams):
+            print("Anomaly US20: Inidivdual ({}) has married their niece/nephew").format(key)
 
 def check_fam(fams, indivs):
     """Checks for family-level logical errors"""
