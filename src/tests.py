@@ -19,6 +19,7 @@ import aunts_and_uncles
 import cousins_not_marry
 import siblings_not_marry
 import correct_gender
+import unique_name_bday
 
 class TestUtils(unittest.TestCase):
     """Class for testing utility functions"""
@@ -498,6 +499,17 @@ class TestCorrectGender(unittest.TestCase):
         """Checks if wife is the correct gender"""
         test = correct_gender.wife_correct_gender(self.fam[0], self.fam[1]['F04'])
         self.assertFalse(test)
+
+class TestUniqueBDayName(unittest.TestCase):
+    """Class to test uniqueness of names and birthday combinations"""
+    def setUp(self):
+        gedcom = open('inputs/MN_Sprint3_input.txt','r')
+        self.indiv = parser.parse(gedcom)[0]
+    def tearDown(self):
+        self.indiv = None
+    def test_unique_name(self):
+        test = unique_name_bday.check_names(self.indiv['I01'], self.indiv)
+        self.assertTrue(test)
         
 if __name__ == '__main__':
     unittest.main()
