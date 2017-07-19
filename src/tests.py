@@ -16,6 +16,7 @@ import marr_after_14
 import male_last_names
 import no_marr_to_desc
 import aunts_and_uncles
+import cousins_not_marry
 
 class TestUtils(unittest.TestCase):
     """Class for testing utility functions"""
@@ -417,6 +418,30 @@ class TestAuntAndUncles(unittest.TestCase):
     def test_aunts_and_uncles_false(self):
         """Checks when individual is married to a niece/nephew"""
         test = aunts_and_uncles.aunts_and_uncles('I04', self.fam[0], self.fam[1])
+        self.assertFalse(test)
+
+class TestCousinsNotMarry(unittest.TestCase):
+    """Class to test that first cousins have not married"""
+    def setUp(self):
+        gedcom = open('inputs/cousins_not_marry.txt', 'r')
+        self.fam = parser.parse(gedcom)
+
+    def tearDown(self):
+        self.fam = None
+
+    def test_no_cousins(self):
+        """Checks when individual is not a first cousin"""
+        test = cousins_not_marry.cousins_not_marry('I05', self.fam[0], self.fam[1])
+        self.assertTrue(test)
+
+    def test_cousins_true(self):
+        """Checks when individual is not married to a cousin"""
+        test = cousins_not_marry.cousins_not_marry('I01', self.fam[0], self.fam[1])
+        self.assertTrue(test)
+
+    def test_cousins_false(self):
+        """Checks when individual is married to a cousin"""
+        test = cousins_not_marry.cousins_not_marry('I11', self.fam[0], self.fam[1])
         self.assertFalse(test)
 
 if __name__ == '__main__':
