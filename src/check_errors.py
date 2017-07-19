@@ -16,6 +16,10 @@ from no_marr_to_desc import *
 from fewer_than_15_siblings import *
 from multiple_births import *
 from unique_name_bday import *
+from aunts_and_uncles import *
+from cousins_not_marry import *
+from siblings_not_marry import *
+from correct_gender import *
 
 def check_indiv(indivs, fams):
     """Checks for individual-level logical errors"""
@@ -39,7 +43,13 @@ def check_indiv(indivs, fams):
                    .format(key, no_bigamy(indivs[key], fams)[0], no_bigamy(indivs[key], fams)[1]))
         if not unique_name_bday(indivs[key],indivs):
             print "Anomaly US23: Multiple Individuals with same name and birthday: {}".format(indivs[key]['NAME'])
-
+        if not aunts_and_uncles(key, indivs, fams):
+            print("Anomaly US20: Inidivdual ({}) has married their niece/nephew").format(key)
+        if not cousins_not_marry(key, indivs, fams):
+            print("Anomaly US19: Individual ({}) has married their first cousin").format(key)
+        if not siblings_not_marry(key, indivs, fams):
+            print "Anomaly US18: Individual ({}) has married their sibling".format(key)
+            
 def check_fam(fams, indivs):
     """Checks for family-level logical errors"""
     for key in sorted(fams.iterkeys()):
@@ -81,4 +91,8 @@ def check_fam(fams, indivs):
             print "Anomaly US15: There are at least 15 siblings in this family ({}).".format(key)
         if not multiple_births(indivs, fams[key]):
             print "Anomaly US14: There are more than 5 siblings born at the same time in this family ({}).".format(key)
+        if not husb_correct_gender(indivs, fams[key]):
+            print "Error US21: Husband is not the correct gender in this family ({})".format(key)
+        if not wife_correct_gender(indivs, fams[key]):
+            print "Error US21: Wife is not the correct gender in this family ({})".format(key)
 

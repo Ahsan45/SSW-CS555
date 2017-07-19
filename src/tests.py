@@ -15,6 +15,10 @@ import birth_before_parents_death
 import marr_after_14
 import male_last_names
 import no_marr_to_desc
+import aunts_and_uncles
+import cousins_not_marry
+import siblings_not_marry
+import correct_gender
 
 class TestUtils(unittest.TestCase):
     """Class for testing utility functions"""
@@ -376,11 +380,11 @@ class TestMaleLastNames(unittest.TestCase):
         self.assertFalse(notsame)
 
 class TestNoMarrToDesc(unittest.TestCase):
-    """Class to test male surnames of family"""
+    """Class to test no marriage to descendents"""
     def setUp(self):
         gedcom = open('inputs/MN_Sprint2_input.txt', 'r')
         self.indiv = parser.parse(gedcom)
-    
+
     def tearDown(self):
         self.indiv = None
 
@@ -394,5 +398,106 @@ class TestNoMarrToDesc(unittest.TestCase):
         test = no_marr_to_desc.no_marr_to_desc(self.indiv[0], self.indiv[1]['F02'], self.indiv[1])
         self.assertFalse(test)
 
+class TestAuntAndUncles(unittest.TestCase):
+    """Class to test that aunts and uncles have not married their nieces and nephews"""
+    def setUp(self):
+        gedcom = open('inputs/aunts_and_uncles.txt', 'r')
+        self.fam = parser.parse(gedcom)
+
+    def tearDown(self):
+        self.fam = None
+
+    def test_no_aunts_and_uncles(self):
+        """Checks when individual is not an aunt or uncle"""
+        test = aunts_and_uncles.aunts_and_uncles('I01', self.fam[0], self.fam[1])
+        self.assertTrue(test)
+
+    def test_aunts_and_uncles_true(self):
+        """Checks when individual is not married to a niece/nephew"""
+        test = aunts_and_uncles.aunts_and_uncles('I15', self.fam[0], self.fam[1])
+        self.assertTrue(test)
+
+    def test_aunts_and_uncles_false(self):
+        """Checks when individual is married to a niece/nephew"""
+        test = aunts_and_uncles.aunts_and_uncles('I04', self.fam[0], self.fam[1])
+        self.assertFalse(test)
+
+class TestCousinsNotMarry(unittest.TestCase):
+    """Class to test that first cousins have not married"""
+    def setUp(self):
+        gedcom = open('inputs/cousins_not_marry.txt', 'r')
+        self.fam = parser.parse(gedcom)
+
+    def tearDown(self):
+        self.fam = None
+
+    def test_no_cousins(self):
+        """Checks when individual is not a first cousin"""
+        test = cousins_not_marry.cousins_not_marry('I05', self.fam[0], self.fam[1])
+        self.assertTrue(test)
+
+    def test_cousins_true(self):
+        """Checks when individual is not married to a cousin"""
+        test = cousins_not_marry.cousins_not_marry('I01', self.fam[0], self.fam[1])
+        self.assertTrue(test)
+
+    def test_cousins_false(self):
+        """Checks when individual is married to a cousin"""
+        test = cousins_not_marry.cousins_not_marry('I11', self.fam[0], self.fam[1])
+        self.assertFalse(test)
+
+class TestSiblingsNotMarry(unittest.TestCase):
+    """Class to test that siblings have not married"""
+    def setUp(self):
+        gedcom = open('inputs/siblings_not_marry.txt', 'r')
+        self.fam = parser.parse(gedcom)
+
+    def tearDown(self):
+        self.fam = None
+
+    def test_siblings_true(self):
+        """Checks if individual is not married to a sibling"""
+        test = siblings_not_marry.siblings_not_marry('I03', self.fam[0], self.fam[1])
+        self.assertTrue(test)
+
+    def test_siblings_false(self):
+        """Checks if individual is married to a sibling"""
+        test = siblings_not_marry.siblings_not_marry('I04', self.fam[0], self.fam[1])
+        self.assertFalse(test)
+
+    def test_no_siblings(self):
+        """Checks if there are no siblings"""
+        test = siblings_not_marry.siblings_not_marry('I03', self.fam[0], self.fam[1])
+        self.assertTrue(test)
+        
+class TestCorrectGender(unittest.TestCase):
+    """Class to test that spouses are correct gender"""
+    def setUp(self):
+        gedcom = open('inputs/correct_gender.txt', 'r')
+        self.fam = parser.parse(gedcom)
+
+    def tearDown(self):
+        self.fam = None
+
+    def test_husb_correct_gender(self):
+        """Checks if husband is the correct gender"""
+        test = correct_gender.husb_correct_gender(self.fam[0], self.fam[1]['F01'])
+        self.assertTrue(test)
+
+    def test_husb_wrong_gender(self):
+        """Checks if husband is the correct gender"""
+        test = correct_gender.husb_correct_gender(self.fam[0], self.fam[1]['F03'])
+        self.assertFalse(test)
+
+    def test_wife_correct_gender(self):
+        """Checks if wife is the correct gender"""
+        test = correct_gender.wife_correct_gender(self.fam[0], self.fam[1]['F02'])
+        self.assertTrue(test)
+
+    def test_wife_wrong_gender(self):
+        """Checks if wife is the correct gender"""
+        test = correct_gender.wife_correct_gender(self.fam[0], self.fam[1]['F04'])
+        self.assertFalse(test)
+        
 if __name__ == '__main__':
     unittest.main()
