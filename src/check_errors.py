@@ -100,5 +100,5 @@ def check_fam(fams, indivs):
         if not unique_family(key, fams):
             print "Error US24: Family is not unique ({})".format(key)
         if not unique_firstname(indivs, fams[key]):
-            print "Error US25: First Name is not unique ({})".format(key)
+            print "Error US25: There are children with the same name and birthdate in this family ({})".format(key)
 
