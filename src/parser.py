@@ -64,16 +64,16 @@ def parse(gedcom):
             if level == "0":
                 if tag == "INDI":
                     cur_key = args
+                    if args in individuals:
+                        errors.append("Error US22: Multiple individuals found with same ID: {}".format(args))
                     if args not in individuals:
                         individuals[args] = {}
-                    if args in individuals:
-                        errors.append("Error US22: Multiple Individuals found with same ID: {} (Pleae ignore if individual divorced and/or married)".format(args))
                 if tag == "FAM":
                     cur_key = args
+                    if args in families:
+                        errors.append("Error US22: Multiple families found with same ID: {}".format(args))
                     if args not in families:
                         families[args] = {}
-                    if args in families:
-                        errors.append("Error US22: Multiple Families found with same ID: {}".format(args))
             elif level == "1":
                 if tag == "BIRT" or tag == "DEAT" or tag == "MARR" or tag == "DIV":
                     add_to_dict(cur_key, tag, "")
