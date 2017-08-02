@@ -4,6 +4,8 @@ from parser import parse
 from table import build_table
 import check_errors
 from print_deceased import print_deceased
+from living_married import *
+from living_single import *
 
 def main(argv):
     """Main function that reads GEDCOM file"""
@@ -33,6 +35,12 @@ def main(argv):
     for error in sorted(check_errors.check_fam(data[1], data[0])): print error
     if check_errors.check_fam(data[1], data[0]) == []: print 'None'
     print
-
+    print "Living Married Individuals (US30):" 
+    living_married(data[0])
+    print
+    print "Living Single Individuals (US31):" 
+    living_single(data[0])
+    print
+    
 if __name__ == "__main__":
     main(sys.argv)
