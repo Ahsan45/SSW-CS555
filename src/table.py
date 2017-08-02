@@ -1,5 +1,5 @@
 """Module for generating a table based on gedcom data"""
-
+from sort_siblings import sort_siblings
 import time
 from prettytable import PrettyTable
 import utils
@@ -27,7 +27,7 @@ def build_table(cur_data, ref_data, data_type):
             else: return "NA"
 
         return cur_data[key][field] if field in cur_data[key] else "NA"
-
+    
     if data_type == "individuals":
         table.field_names = ["ID", "Name", "Gender", "Birthday","Age",
                              "Alive", "Death", "Child", "Spouse"]
@@ -41,6 +41,7 @@ def build_table(cur_data, ref_data, data_type):
 
         for key in sorted(cur_data.iterkeys()):
             table.add_row([key, get(key, "MARR"), get(key, "DIV"), get(key, "HUSB"), get(key, "HUSB_NAME"),
-                           get(key, "WIFE"), get(key, "WIFE_NAME"), get(key, "CHIL")])
+                           get(key, "WIFE"), get(key, "WIFE_NAME"), sort_siblings(get(key, "CHIL"),ref_data)])
 
     return table
+
