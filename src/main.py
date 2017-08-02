@@ -17,9 +17,17 @@ def main(argv):
     print "\nFamilies\n", fams
 
     print
-    for error in data[2]: print error
-    check_errors.check_indiv(data[0], data[1])
-    check_errors.check_fam(data[1], data[0])
+    print "Parser Errors:"
+    for error in sorted(data[2]): print error
+    if data[2] == []: print 'None'
+    print
+    print "Individual Errors:"
+    for error in sorted(check_errors.check_indiv(data[0], data[1])): print error
+    if check_errors.check_indiv(data[0], data[1]) == []: print 'None'
+    print
+    print "Family Errors:"
+    for error in sorted(check_errors.check_fam(data[1], data[0])): print error
+    if check_errors.check_fam(data[1], data[0]) == []: print 'None'
     print
 
 if __name__ == "__main__":
