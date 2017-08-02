@@ -4,6 +4,7 @@ from datetime import datetime
 import time
 
 def sort_siblings(children, people):
+    '''find siblings in individual dictionary, sort by date of birth'''
     kidsToBeSorted={}
     if children != "NA":
         for child in children:

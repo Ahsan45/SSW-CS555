@@ -3,6 +3,7 @@ import sys
 from parser import parse
 from table import build_table
 import check_errors
+from print_deceased import print_deceased
 
 def main(argv):
     """Main function that reads GEDCOM file"""
@@ -12,9 +13,12 @@ def main(argv):
 
     inds = build_table(data[0], data[1], "individuals")
     fams = build_table(data[1], data[0], "families")
+    deadPeople = print_deceased(data[0])
+    dead = build_table(deadPeople, data[1], "deceased")
 
     print "\nIndividuals\n", inds
     print "\nFamilies\n", fams
+    print "\nDeceased\n", dead
 
     print
     print "Parser Errors:"

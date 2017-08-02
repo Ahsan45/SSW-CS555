@@ -35,6 +35,13 @@ def build_table(cur_data, ref_data, data_type):
         for key in sorted(cur_data.iterkeys()):
             table.add_row([key, get(key, "NAME"), get(key, "SEX"), get(key, "BIRT"), get(key, "AGE"),
                            get(key, "ALIVE"), get(key, "DEAT"), get(key, "FAMC"), get(key, "FAMS")])
+
+    elif data_type == "deceased":
+        table.field_names = ["ID", "Death"]
+
+        for key in sorted(cur_data.iterkeys()):
+            table.add_row([key, cur_data[key]])
+
     else:
         table.field_names = ["ID", "Married", "Divorced", "Husband ID",
                              "Husband Name", "Wife ID", "Wife Name", "Children"]
