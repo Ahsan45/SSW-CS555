@@ -17,6 +17,7 @@ def main(argv):
     print "\nFamilies\n", fams
 
     print
+    for error in data[2]: print error
     check_errors.check_indiv(data[0], data[1])
     check_errors.check_fam(data[1], data[0])
     print

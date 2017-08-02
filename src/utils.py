@@ -4,19 +4,25 @@ from dateutil.relativedelta import relativedelta
 
 def date_first(date1, date2):
     """Checks if date1 comes before date2"""
-    date1 = parser.parse(date1)
-    date2 = parser.parse(date2)
+    try:
+        date1 = parser.parse(date1)
+        date2 = parser.parse(date2)
 
-    return (relativedelta(date2, date1).days >= 0 and
-            relativedelta(date2, date1).months >= 0 and
-            relativedelta(date2, date1).years >= 0)
+        return (relativedelta(date2, date1).days >= 0 and
+                relativedelta(date2, date1).months >= 0 and
+                relativedelta(date2, date1).years >= 0)
+    except ValueError:
+        return False
 
 def find_age(start, end):
     """Parse strings as date objects and compare them to get age"""
-    start = parser.parse(start)
-    end = parser.parse(end)
+    try:
+        start = parser.parse(start)
+        end = parser.parse(end)
 
-    return relativedelta(end, start).years
+        return relativedelta(end, start).years
+    except ValueError:
+        return 'NA'
 
 def get_parents(key, indivs, fams):
     """Get parents of an individual"""

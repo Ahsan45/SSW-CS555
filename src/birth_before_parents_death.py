@@ -4,9 +4,12 @@ from dateutil import parser
 
 def date_within_9mo(date1, date2):
     """Checks if date1 comes 9 months within date2"""
-    date1 = parser.parse(date1, dayfirst = True)
-    date2 = parser.parse(date2, dayfirst = True)
-    return (date1 - date2).days/30.4 > 9
+    try:
+        date1 = parser.parse(date1, dayfirst=True)
+        date2 = parser.parse(date2, dayfirst=True)
+        return (date1 - date2).days/30.4 > 9
+    except ValueError:
+        return False
 
 def birth_before_parents_death(indiv, fam):
     """Returns if mother or father died before birth/conception"""

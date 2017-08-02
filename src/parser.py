@@ -1,7 +1,10 @@
 """Module for parsing gedcom files"""
+from date_checker import valid_date
 
 def parse(gedcom):
     """Parse each line of the GEDCOM file"""
+    errors = [] # Collect errors here
+
     valid_tags = [["INDI", "FAM", "HEAD", "TRLR", "NOTE"],
                   ["NAME", "SEX", "BIRT", "DEAT", "FAMC","FAMS",
                    "MARR", "HUSB", "WIFE", "CHIL", "DIV"],
@@ -64,13 +67,13 @@ def parse(gedcom):
                     if args not in individuals:
                         individuals[args] = {}
                     if args in individuals:
-                        print "Error US22: Multiple Individuals found with same ID: {} (Pleae ignore if individual divorced and/or married)".format(args)
+                        errors.append("Error US22: Multiple Individuals found with same ID: {} (Pleae ignore if individual divorced and/or married)".format(args))
                 if tag == "FAM":
                     cur_key = args
                     if args not in families:
                         families[args] = {}
                     if args in families:
-                        print "Error US22: Multiple Families found with same ID: {}".format(args)
+                        errors.append("Error US22: Multiple Families found with same ID: {}".format(args))
             elif level == "1":
                 if tag == "BIRT" or tag == "DEAT" or tag == "MARR" or tag == "DIV":
                     add_to_dict(cur_key, tag, "")
@@ -80,8 +83,12 @@ def parse(gedcom):
             else:
                 if second_key == "":
                     add_to_dict(cur_key, tag, args)
+                    if not valid_date(args):
+                        errors.append("Error US42: Invalid Date ({})".format(args))
                 else:
                     add_to_dict(cur_key, second_key, args)
                     second_key = ""
+                    if not valid_date(args):
+                        errors.append("Error US42: Invalid Date ({})".format(args))
 
-    return (individuals, families)
+    return (individuals, families, errors)

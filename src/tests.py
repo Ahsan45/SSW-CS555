@@ -20,6 +20,7 @@ import cousins_not_marry
 import siblings_not_marry
 import correct_gender
 import unique_name_bday
+import date_checker
 
 class TestUtils(unittest.TestCase):
     """Class for testing utility functions"""
@@ -372,7 +373,7 @@ class TestMaleLastNames(unittest.TestCase):
 
     def test_male_names_true(self):
         """Check true when all names the same"""
-        allsame = male_last_names.male_last_names(self.indiv[0], male_last_names.get_males(self.indiv[1]['F02'],self.indiv[0]))
+        allsame = male_last_names.male_last_names(self.indiv[0], male_last_names.get_males(self.indiv[1]['F02'], self.indiv[0]))
         self.assertTrue(allsame)
 
     def test_male_names_false(self):
@@ -391,7 +392,7 @@ class TestNoMarrToDesc(unittest.TestCase):
 
     def test_no_marr_desc(self):
         """Check no marriage to descendents (trues)"""
-        test = no_marr_to_desc.no_marr_to_desc(self.indiv[0],self.indiv[1]['F01'], self.indiv[1])
+        test = no_marr_to_desc.no_marr_to_desc(self.indiv[0], self.indiv[1]['F01'], self.indiv[1])
         self.assertTrue(test)
 
     def test_marr_desc(self):
@@ -470,7 +471,7 @@ class TestSiblingsNotMarry(unittest.TestCase):
         """Checks if there are no siblings"""
         test = siblings_not_marry.siblings_not_marry('I03', self.fam[0], self.fam[1])
         self.assertTrue(test)
-        
+
 class TestCorrectGender(unittest.TestCase):
     """Class to test that spouses are correct gender"""
     def setUp(self):
@@ -503,13 +504,38 @@ class TestCorrectGender(unittest.TestCase):
 class TestUniqueBDayName(unittest.TestCase):
     """Class to test uniqueness of names and birthday combinations"""
     def setUp(self):
-        gedcom = open('inputs/MN_Sprint3_input.txt','r')
+        gedcom = open('inputs/MN_Sprint3_input.txt', 'r')
         self.indiv = parser.parse(gedcom)[0]
+
     def tearDown(self):
         self.indiv = None
+
     def test_unique_name(self):
+        """Check if individual's name is unique"""
         test = unique_name_bday.check_names(self.indiv['I01'], self.indiv)
         self.assertTrue(test)
-        
+
+class TestDateChecker(unittest.TestCase):
+    """Class to test that date validator works"""
+    def test_valid_date(self):
+        """Checks if date is valid"""
+        test = date_checker.valid_date('19 APR 2017')
+        self.assertTrue(test)
+
+    def test_invalid_date(self):
+        """Checks if date is invalid when obviously wrong"""
+        test = date_checker.valid_date('87 APR 2017')
+        self.assertFalse(test)
+
+    def test_valid_leap_year(self):
+        """Checks if date is valid when leap year"""
+        test = date_checker.valid_date('29 FEB 2016')
+        self.assertTrue(test)
+
+    def test_invalid_leap_year(self):
+        """Checks if date is invalid when not leap year"""
+        test = date_checker.valid_date('29 FEB 2017')
+        self.assertFalse(test)
+
 if __name__ == '__main__':
     unittest.main()
