@@ -5,5 +5,5 @@ def print_deceased(people):
     for key in sorted(people.iterkeys()):
         if 'DEAT' in people[key]:
             deadPeople[key] = people[key]['DEAT']
-    print deadPeople
+    
     return deadPeople
