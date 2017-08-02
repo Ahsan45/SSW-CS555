@@ -21,6 +21,7 @@ import siblings_not_marry
 import correct_gender
 import unique_name_bday
 import date_checker
+import corresponding_entries
 
 class TestUtils(unittest.TestCase):
     """Class for testing utility functions"""
@@ -536,6 +537,40 @@ class TestDateChecker(unittest.TestCase):
         """Checks if date is invalid when not leap year"""
         test = date_checker.valid_date('29 FEB 2017')
         self.assertFalse(test)
+
+class TestMissingEntries(unittest.TestCase):
+    """Class to test that corresponding entries exist"""
+    def setUp(self):
+        gedcom = open('inputs/missing_entries.txt', 'r')
+        self.fam = parser.parse(gedcom)
+
+    def tearDown(self):
+        self.fam = None
+
+    def test_missing_child_indiv(self):
+        """Tests when indiv missing child entry in family"""
+        test = corresponding_entries.corresponding_indiv('I01', self.fam[0]['I01'], self.fam[1])
+        self.assertFalse(test)
+
+    def test_missing_spouse_indiv(self):
+        """Tests when indiv missing spouse entry in family"""
+        test = corresponding_entries.corresponding_indiv('I04', self.fam[0]['I04'], self.fam[1])
+        self.assertFalse(test)
+
+    def test_missing_child_fam(self):
+        """Tests when family missing child in indivs"""
+        test = corresponding_entries.corresponding_fam('F01', self.fam[1]['F01'], self.fam[0])
+        self.assertFalse(test)
+
+    def test_missing_spouse_fam(self):
+        """Tests when family missing spouse in indivs"""
+        test = corresponding_entries.corresponding_fam('F01', self.fam[1]['F01'], self.fam[0])
+        self.assertFalse(test)
+
+    def test_corresponding_entries(self):
+        """Tests when when individual has corresponding entries"""
+        test = corresponding_entries.corresponding_indiv('I02', self.fam[0]['I02'], self.fam[1])
+        self.assertTrue(test)
 
 if __name__ == '__main__':
     unittest.main()

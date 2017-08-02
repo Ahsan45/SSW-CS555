@@ -22,6 +22,7 @@ from siblings_not_marry import *
 from correct_gender import *
 from unique_family import *
 from unique_firstname import *
+from corresponding_entries import *
 
 def check_indiv(indivs, fams):
     """Checks for individual-level logical errors"""
@@ -46,11 +47,13 @@ def check_indiv(indivs, fams):
         if not unique_name_bday(indivs[key],indivs):
             print "Anomaly US23: Multiple Individuals with same name and birthday: {}".format(indivs[key]['NAME'])
         if not aunts_and_uncles(key, indivs, fams):
-            print("Anomaly US20: Inidivdual ({}) has married their niece/nephew").format(key)
+            print "Anomaly US20: Inidivdual ({}) has married their niece/nephew".format(key)
         if not cousins_not_marry(key, indivs, fams):
-            print("Anomaly US19: Individual ({}) has married their first cousin").format(key)
+            print "Anomaly US19: Individual ({}) has married their first cousin".format(key)
         if not siblings_not_marry(key, indivs, fams):
             print "Anomaly US18: Individual ({}) has married their sibling".format(key)
+        if not corresponding_indiv(key, indivs[key], fams):
+            print "Error US26: Corresponding entries are missing for the following individual: {}".format(key)
             
 def check_fam(fams, indivs):
     """Checks for family-level logical errors"""
@@ -101,4 +104,5 @@ def check_fam(fams, indivs):
             print "Error US24: Family is not unique ({})".format(key)
         if not unique_firstname(indivs, fams[key]):
             print "Error US25: There are children with the same name and birthdate in this family ({})".format(key)
-
+        if not corresponding_fam(key, fams[key], indivs):
+            print "Error US26: Corresponding entries are missing for the following family: {}".format(key)

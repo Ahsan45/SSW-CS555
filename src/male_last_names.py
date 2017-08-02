@@ -14,13 +14,11 @@ def get_last_name(people, individual):
 
 def get_males(families, people):
     """Finds all males in family: Husband and any children who have 'SEX' of 'M'"""
-        
-    familyMen = []
-    familyMen.append(families['HUSB'])
+    familyMen = [families['HUSB']]
     children = []
     if 'CHIL' in families:
         children = families['CHIL']
         for kid in children:
-            if people[kid]['SEX'] == 'M':
+            if kid in people and people[kid]['SEX'] == 'M':
                 familyMen.append(kid) 
     return familyMen

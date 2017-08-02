@@ -14,7 +14,7 @@ def multiple_births(indiv, fam):
     for child1 in children:
         i = 0
         for child2 in children:
-            if indiv[child1]['BIRT'] == indiv[child2]['BIRT']:
+            if child1 in indiv and child2 in indiv and indiv[child1]['BIRT'] == indiv[child2]['BIRT']:
                 i+=1
             if i == 6:
                 return False

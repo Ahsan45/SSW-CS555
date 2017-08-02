@@ -13,6 +13,6 @@ def marr_before_child(ind, family):
 def check_children(ind, children, date):
     """Helper function to check birth of each child"""
     for child in children:
-        if ('BIRT' not in ind[child]) or utils.date_first(ind[child]['BIRT'], date):
+        if (child not in ind or 'BIRT' not in ind[child]) or utils.date_first(ind[child]['BIRT'], date):
             return False
     return True

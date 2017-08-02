@@ -40,14 +40,14 @@ def get_siblings(key, indivs, fams):
 
 def get_spouses(key, indivs, fams):
     """Get spouses of an individual"""
-    if 'FAMS' in indivs[key]:
+    if key in indivs and 'FAMS' in indivs[key]:
         return reduce(lambda x, y: x + [fams[y]['HUSB'] if indivs[key]['SEX'] == 'F' else fams[y]['WIFE']], indivs[key]['FAMS'], [])
     else:
         return []
 
 def get_children(key, indivs, fams):
     """Get children of an individual"""
-    if 'FAMS' in indivs[key]:
+    if key in indivs and 'FAMS' in indivs[key]:
         return reduce(lambda x, y: x + fams[y]['CHIL'] if 'CHIL' in fams[y] else [], indivs[key]['FAMS'], [])
     else:
         return []

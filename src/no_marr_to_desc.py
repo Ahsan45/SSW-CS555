@@ -10,7 +10,7 @@ def no_marr_to_desc(individuals, family, families):
         return False
     elif wife in descendents:
         return False
-    else:   
+    else:
         return True 
 
 def get_desc(individuals, family, allFam):
@@ -19,14 +19,13 @@ def get_desc(individuals, family, allFam):
         children = family['CHIL']
     else:
         children = [] 
-        
-    if children == []:
 
+    if children == []:
         return children
     else:
         families = []
         for kid in children:
-            if 'FAMS' in individuals[kid]:
+            if kid in individuals and 'FAMS' in individuals[kid]:
                 families.extend(individuals[kid]['FAMS'])
         if families == []:
             return children

@@ -24,7 +24,7 @@ def get_oldest_child_birth(fam, indivs):
         children = fam["CHIL"]
         oldest_child_birth = indivs[children[0]]["BIRT"]
         for child in children:
-            if date_first(indivs[child]["BIRT"], oldest_child_birth):
+            if child in indivs and date_first(indivs[child]["BIRT"], oldest_child_birth):
                 oldest_child_birth = indivs[child]["BIRT"]
         return oldest_child_birth
     else:
