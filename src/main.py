@@ -6,6 +6,7 @@ import check_errors
 from print_deceased import print_deceased
 from living_married import *
 from living_single import *
+from list_multiple_births import *
 
 def main(argv):
     """Main function that reads GEDCOM file"""
@@ -40,6 +41,9 @@ def main(argv):
     print
     print "Living Single Individuals (US31):" 
     living_single(data[0])
+    print
+    print "Multiple Births (US32):"
+    list_multiple_births(data[0])
     print
     
 if __name__ == "__main__":
